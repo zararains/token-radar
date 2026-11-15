@@ -125,6 +125,41 @@
     );
   }
 
+  // -- the yardstick: the multiples the board is priced from ------------------
+
+  function yardstickStrip() {
+    var cats = Object.keys(DATA.category_multiples).sort(function (a, b) {
+      var byPeers = (DATA.category_evidence[b] || 0) - (DATA.category_evidence[a] || 0);
+      return byPeers !== 0 ? byPeers : DATA.category_multiples[b] - DATA.category_multiples[a];
+    });
+    var priced = {};
+    var fallbackRows = 0;
+    DATA.rows.forEach(function (r) {
+      if (DATA.category_multiples[r.category] === undefined) fallbackRows++;
+      else priced[r.category] = (priced[r.category] || 0) + 1;
+    });
+    var body = cats.map(function (cat) {
+      return (
+        '<tr><td>' + esc(cat) + '</td>' +
+        '<td class="num">' + DATA.category_multiples[cat].toFixed(3) + '×</td>' +
+        '<td class="num">' + (DATA.category_evidence[cat] || 0) + '</td>' +
+        '<td class="num">' + (priced[cat] || 0) + '</td></tr>'
+      );
+    }).join('');
+    return (
+      '<section class="yardstick"><h3>The yardstick — the multiples behind the board</h3>' +
+      '<p>Every implied value on this board starts from one of these multiples: the median market cap per ' +
+      'TVL dollar among the traded protocols in the same category, taken from the snapshot itself. A ' +
+      'category earns its own multiple at five or more traded peers with a reported cap; every other row ' +
+      'is priced at the market median instead.</p>' +
+      '<table><thead><tr><th>Category</th><th class="num">Multiple</th><th class="num">Traded peers</th>' +
+      '<th class="num">Board rows priced from it</th></tr></thead><tbody>' + body +
+      '<tr class="fallback"><td>Every other category</td><td class="num">' + DATA.global_multiple.toFixed(3) +
+      '×</td><td class="num">—</td><td class="num">' + fallbackRows + '</td></tr>' +
+      '</tbody></table></section>'
+    );
+  }
+
   // -- the board --------------------------------------------------------------
 
   function categories() {
@@ -230,7 +265,7 @@
       );
     }).join('');
     app.innerHTML =
-      statsStrip() + methodStrip() + controls(state, rows.length) +
+      statsStrip() + methodStrip() + yardstickStrip() + controls(state, rows.length) +
       '<table class="board"><thead><tr>' +
       headerCell(state, 'rank', '#') +
       headerCell(state, 'name', 'Protocol') +

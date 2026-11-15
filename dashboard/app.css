@@ -141,6 +141,39 @@ main { padding-top: 18px; padding-bottom: 30px; }
 .method b { color: var(--text); }
 .method .formula { font-family: var(--mono); color: var(--teal); font-size: 13px; }
 
+/* Yardstick panel */
+
+.yardstick {
+  background: var(--panel);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.yardstick h3 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--faint);
+}
+
+.yardstick p { margin: 0 0 10px; color: var(--dim); font-size: 13.5px; max-width: 880px; }
+
+.yardstick table { border-collapse: collapse; font-size: 13.5px; width: 100%; }
+.yardstick th, .yardstick td { padding: 3px 18px 3px 0; text-align: left; color: var(--dim); }
+.yardstick td:first-child { color: var(--text); }
+.yardstick thead th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--faint);
+  padding-bottom: 5px;
+}
+.yardstick td.num, .yardstick th.num { text-align: right; font-family: var(--mono); }
+.yardstick tr.fallback td { border-top: 1px solid var(--line); padding-top: 6px; }
+
 /* Controls */
 
 .controls {
